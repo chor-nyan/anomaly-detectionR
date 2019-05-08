@@ -5,11 +5,12 @@ l_ocsvm <- function(lambda, K) {
   alpha <- Variable(m)
   
   # 目的関数
-  objective <- (1/(2*lambda)) * (quad_form(alpha, K)) - sum(alpha)
-  constraints <- list(0 <= alpha, alpha <= 1/lambda)
+  objective <- 1/(2*lambda) * (quad_form(alpha, K)) - sum(alpha)
+  constraints <- list(0 <= alpha, alpha <= 1)
   prob <- Problem(Minimize(objective), constraints)
   solution <- solve(prob)
   
+  dual <- solution$value
   alpha <- solution$getValue(alpha)
   sv_flag <- alpha > 0.00001
   alpha[!sv_flag] <-  0
@@ -28,7 +29,7 @@ l_ocsvm <- function(lambda, K) {
     return(max(0, 1 - x))
   }
   
-  loss <- sum(max_0(as.vector(dis_hyperplane)))
+  # loss <- sum(max_0(as.vector(dis_hyperplane)))
   
-  return(list(alpha, loss))
+  return(list(alpha, dual))
 }

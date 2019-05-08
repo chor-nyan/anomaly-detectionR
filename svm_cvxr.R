@@ -33,7 +33,6 @@ C_ocsvm <- function(C, K) {
   return(list(alpha, loss))
 }
 
-
 # shrink <- subset(x, sv_flag)
 # m = dim(shrink)[1]
 # # 変数定義

@@ -12,11 +12,14 @@ x1 <- rbind(matrix(rnorm(950*2), 950, 2))
 x2 <- rbind(matrix(rnorm(50*2), 50, 2)) + 3 
 x <- rbind(x1, x2)
 # rbf <- rbfdot(sigma = 0.1)
-sigma <- sigest(x, scaled = F)[2]
+sigma <- 1/(2*median(dist(x))^2)
 rbf <- rbfdot(sigma = sigma)
 K <- kernelMatrix(rbf, x)
 C <- 0.06
 C_ref <- 0.05
+
+# sv <- ksvm(x, type = 'one-svc', nu = 0.1, kpar = list(sigma=sigma))
+# plot(data.frame(x), col = (!predict(sv))+1, cex = 1.5, lwd = 3)
 
 temp <- C_ocsvm(C_ref, K)
 alpha_C_ref <- temp[[1]]
